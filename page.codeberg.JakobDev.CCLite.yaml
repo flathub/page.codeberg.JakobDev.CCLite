@@ -21,10 +21,10 @@ modules:
         url: https://luajit.org/download/LuaJIT-2.1.0-beta3.tar.gz
         sha256: 1ad2e34b111c802f9d0cdf019e986909123237a28c746b21295b63c9e785d9c3
         x-checker-data:
-            type: anitya
-            project-id: 6444
-            stable-only: false
-            url-template: https://luajit.org/download/LuaJIT-$version.tar.gz
+          type: anitya
+          project-id: 6444
+          stable-only: false
+          url-template: https://luajit.org/download/LuaJIT-$version.tar.gz
     cleanup:
       - /share/man
       - /include
@@ -35,9 +35,9 @@ modules:
         url: https://downloads.sourceforge.net/modplug-xmms/libmodplug-0.8.9.0.tar.gz
         sha256: 457ca5a6c179656d66c01505c0d95fafaead4329b9dbaa0f997d00a3508ad9de
         x-checker-data:
-            type: anitya
-            project-id: 5669
-            url-template: https://downloads.sourceforge.net/modplug-xmms/libmodplug-$version.tar.gz
+          type: anitya
+          project-id: 5669
+          url-template: https://downloads.sourceforge.net/modplug-xmms/libmodplug-$version.tar.gz
     cleanup:
       - /include
 
@@ -47,10 +47,11 @@ modules:
         url: https://github.com/love2d/love/releases/download/11.4/love-11.4-linux-src.tar.gz
         sha256: e32feecaf5f4f210242a4b5f26cdf9ce9014bfde18d51286f643bb7fe51f5369
         x-checker-data:
-            type: json
-            url: https://api.github.com/repos/love2d/love/releases/latest
-            version-query: .tag_name
-            url-query: .assets[] | select(.name | test ("^.+linux-src\\.tar\\.gz$")) | .browser_download_url
+          type: json
+          url: https://api.github.com/repos/love2d/love/releases/latest
+          version-query: .tag_name
+          url-query: .assets[] | select(.name | test ("^.+linux-src\\.tar\\.gz$"))
+            | .browser_download_url
     cleanup:
       - /share
 
@@ -58,14 +59,15 @@ modules:
     buildsystem: simple
     build-commands:
       - INC_PATH=-I$FLATPAK_DEST/include/luajit-2.1 make linux
-      - LUAPATH=$FLATPAK_DEST/share/lua/5.1 LUACPATH=$FLATPAK_DEST/lib/lua/5.1 make install
+      - LUAPATH=$FLATPAK_DEST/share/lua/5.1 LUACPATH=$FLATPAK_DEST/lib/lua/5.1 make
+        install
     sources:
       - type: git
         url: https://github.com/brunoos/luasec.git
-        commit: fddde111f7fe9ad5417d75ebbd70429d13eaad97
-        tag: v1.3.1
+        commit: 4c06287052d68fdbe7429b8f967cdc8ee94aa44a
+        tag: v1.3.2
         x-checker-data:
-            type: git
+          type: git
 
   - name: CCLite
     buildsystem: simple
@@ -75,7 +77,9 @@ modules:
       - install -Dm755 cclite.sh $FLATPAK_DEST/bin/cclite
       - install -Dm644 data/page.codeberg.JakobDev.CCLite.desktop -t $FLATPAK_DEST/share/applications
       - install -Dm644 data/page.codeberg.JakobDev.CCLite.metainfo.xml -t $FLATPAK_DEST/share/metainfo
-      - for size in {16x16,32x32,64x64,128x128,256x256,512x512}; do install -Dm644 data/icons/$size.png $FLATPAK_DEST/share/icons/hicolor/$size/apps/$FLATPAK_ID.png; done
+      - for size in {16x16,32x32,64x64,128x128,256x256,512x512}; do install -Dm644
+        data/icons/$size.png $FLATPAK_DEST/share/icons/hicolor/$size/apps/$FLATPAK_ID.png;
+        done
     sources:
       - type: archive
         url: https://codeberg.org/JakobDev/CCLite/archive/5.5.tar.gz

@@ -10,24 +10,15 @@ finish-args:
   - --share=ipc
   - --share=network
   - --socket=pulseaudio
+cleanup:
+  - /lib/pkgconfig
+  - /share/man
+  - /include
+  - "*.la"
+  - "*.a"
 
 modules:
-  - name: luajit
-    no-autogen: true
-    make-install-args:
-      - PREFIX=/app
-    sources:
-      - type: archive
-        url: https://luajit.org/download/LuaJIT-2.1.0-beta3.tar.gz
-        sha256: 1ad2e34b111c802f9d0cdf019e986909123237a28c746b21295b63c9e785d9c3
-        x-checker-data:
-          type: anitya
-          project-id: 6444
-          stable-only: false
-          url-template: https://luajit.org/download/LuaJIT-$version.tar.gz
-    cleanup:
-      - /share/man
-      - /include
+  - shared-modules/luajit/luajit.json
 
   - name: libmodplug
     sources:
@@ -38,8 +29,6 @@ modules:
           type: anitya
           project-id: 5669
           url-template: https://downloads.sourceforge.net/modplug-xmms/libmodplug-$version.tar.gz
-    cleanup:
-      - /include
 
   - name: love2d
     sources:
@@ -94,6 +83,7 @@ modules:
         commands:
           - export LUA_PATH="./?.lua;/app/share/luajit-2.1.0-beta3/?.lua;/app/share/lua/5.1/?.lua;/app/share/lua/5.1/?/init.lua"
           - export LUA_CPATH="./?.so;/app/lib/lua/5.1/?.so;/app/lib/lua/5.1/loadall.so"
+          - export SDL_APP_ID=page.codeberg.JakobDev.CCLite
           - exec love /app/CCLite "$@"
       - type: patch
         path: fix-typo.patch
